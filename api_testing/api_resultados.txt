@@ -1,0 +1,50 @@
+RESUMEN DE RESULTADOS - TESTING DE API
+
+Integración Fake Store API
+QA: María Eugenia Toledo
+Fecha de ejecución: Marzo 2026
+Herramienta: Postman v12.2.0
+Endpoint Base: https://fakestoreapi.com/
+
+1. RESUMEN EJECUTIVO
+--------------------
+Se realizaron pruebas de caja negra sobre la API pública "Fake Store" para validar la 
+consistencia de los datos que alimentarían la interfaz de usuario. Se ejecutaron 
+10 casos de prueba cubriendo métodos GET, POST, PUT y DELETE.
+
+2. MÉTRICAS DE EJECUCIÓN
+------------------------
+● Casos de Prueba Totales: 10
+● Exitosos (PASS): 7
+● Fallidos (FAIL): 3 (API-05, API-06, API-07)
+● Porcentaje de éxito: 70%
+
+3. DETALLE DE FALLAS (BUGS DETECTADOS)
+--------------------------------------
+● API-05 (GET /products/9999): FALLIDO. 
+  Resultado esperado: 404 Not Found. 
+  Resultado obtenido: 200 OK (devuelve datos inconsistentes).
+  Impacto: Grave. El sistema no valida correctamente ids inexistentes.
+
+● API-06 (DELETE /products/6): FALLIDO.
+  Resultado esperado: Eliminación efectiva.
+  Resultado obtenido: El registro persiste al reconsultar la lista completa.
+  Impacto: Medio. La persistencia de datos falló tras la petición de borrado.
+
+● API-07 (GET /categories): FALLIDO.
+  Resultado esperado: 200 OK con lista de categorías.
+  Resultado obtenido: 404 Not Found.
+  Impacto: Alto. El endpoint está caído o la ruta es incorrecta según la documentación.
+
+4. HALLAZGOS POSITIVOS
+----------------------
+● API-10 (Estructura): La validación del esquema JSON para usuarios fue exitosa.
+● API-08 (Seguridad): El login fallido responde correctamente con error de formato 
+  cuando los datos no son JSON.
+
+5. CONCLUSIÓN TÉCNICA
+---------------------
+El estado actual de la API presenta regresiones importantes. Debido a que el 30% 
+de las pruebas fallaron (incluyendo fallas de validación y endpoints caídos), el 
+entorno NO es apto para la integración final hasta que se revisen las rutas y 
+la lógica de borrado/validación.
